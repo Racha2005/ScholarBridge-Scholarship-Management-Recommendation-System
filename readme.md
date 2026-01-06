@@ -1,4 +1,4 @@
-# ScholarBridge – Scholarship Management & Recommendation System
+# 🎓 ScholarBridge – Scholarship Management & Recommendation System 🎓
 
 ScholarBridge is a full-stack web application designed to simplify and digitalize the scholarship process. Instead of students visiting multiple portals, filling repeated forms, and waiting without updates, ScholarBridge provides one centralized platform where students can search, apply, and track scholarships while providers and administrators manage everything through dedicated dashboards.
 
