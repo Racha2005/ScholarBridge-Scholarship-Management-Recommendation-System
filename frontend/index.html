@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarBridge - Scholarship Platform</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-menu a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #667eea;
+        }
+
+        .nav-buttons button {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: transform 0.2s;
+        }
+
+        .btn-login {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-signup {
+            background: #e94897;
+            color: white;
+        }
+
+        .btn-admin {
+            background: #28a745;
+            color: white;
+        }
+
+        .nav-buttons button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .carousel-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            position: relative;
+        }
+
+        .carousel {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            height: 400px;
+        }
+
+        .carousel-slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: white;
+            width: 40px;
+            border-radius: 10px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal-content {
+            background: white;
+            width: 450px;
+            height: 100%;
+            padding: 40px;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .forgot-link {
+            display: block;
+            text-align: right;
+            margin-top: 10px;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .switch-form {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .switch-form a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard.active {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 30px;
+        }
+
+        .sidebar-menu li {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .sidebar-menu li:hover,
+        .sidebar-menu li.active {
+            background: #f0f0f0;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            background: #f5f7fa;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .scholarship-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .scholarship-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .scholarship-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .scholarship-card p {
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .btn-apply {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-apply:hover {
+            background: #5568d3;
+        }
+
+        .user-info {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .about-section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .about-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .about-section p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .dashboard-card h2 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-card p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Profile Dashboard */
+        .profile-dashboard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .profile-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-box h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .detail-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .detail-item h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .detail-item p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .edit-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-badge .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e94897;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .notification-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.3s;
+        }
+
+        .notification-item:hover {
+            background: #f8f9fa;
+        }
+
+        .notification-item.unread {
+            background: #e3f2fd;
+        }
+
+        /* Admin specific styles */
+        .applicant-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .applicant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn-hold {
+            background: #ffc107;
+            color: #333;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .document-viewer {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .btn-view-doc {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landingPage">
+        <nav class="navbar">
+            <div class="nav-left">
+                <div class="logo">🎓 ScholarBridge</div>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#" onclick="openModal('login')">Scholarships</a></li>
+                    <li><a href="#support">Support</a></li>
+                    <li><a href="#help">Help</a></li>
+                </ul>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn-admin" onclick="openModal('adminLogin')">Admin Login</button>
+                <button class="btn-login" onclick="openModal('login')">Login</button>
+                <button class="btn-signup" onclick="openModal('register')">Sign Up</button>
+            </div>
+        </nav>
+
+        <section class="hero" id="home">
+            <h1>Empowering Dreams Through Education</h1>
+            <p>Discover scholarships that match your aspirations</p>
+            
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="carousel-slide active">
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1000&h=400&fit=crop" alt="Students">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1000&h=400&fit=crop" alt="Graduation">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1000&h=400&fit=crop" alt="Library">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1000&h=400&fit=crop" alt="Learning">
+                    </div>
+                </div>
+                <div class="carousel-dots">
+                    <span class="dot active" onclick="goToSlide(0)"></span>
+                    <span class="dot" onclick="goToSlide(1)"></span>
+                    <span class="dot" onclick="goToSlide(2)"></span>
+                    <span class="dot" onclick="goToSlide(3)"></span>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section" id="about">
+            <h2>About ScholarBridge</h2>
+            <p>ScholarBridge is India's most comprehensive scholarship platform, founded with the vision of making quality education accessible to every deserving student, regardless of their financial background. Since our inception in 2020, we have successfully helped over 50,000 students secure scholarships worth more than ₹500 crores, transforming lives and building futures across the nation.</p>
+            
+            <p>Our platform serves as a bridge between talented students and scholarship providers, including government bodies, private trusts, educational institutions, and corporate foundations. We understand that financial constraints should never be a barrier to education, and we work tirelessly to ensure that every student finds the right opportunity to pursue their academic dreams.</p>
+            
+            <p><strong>Our Vision:</strong> To create an India where every student has equal access to quality education, irrespective of their socio-economic background. We envision a future where financial constraints never limit a student's potential, and where merit and determination are the only criteria for educational success.</p>
+            
+            <p><strong>Our Mission:</strong> To simplify the scholarship discovery and application process through cutting-edge technology and personalized matching algorithms. We aim to maximize student success rates by providing comprehensive support throughout the application journey, from initial discovery to final disbursement of funds.</p>
+            
+            <p><strong>What We Do:</strong> ScholarBridge provides a centralized, user-friendly platform where students can discover, compare, and apply for scholarships from various sources. Our intelligent matching system analyzes your academic profile, financial needs, career aspirations, and geographical location to recommend the most suitable scholarships. We also provide application guidance, document verification support, and real-time tracking of your application status.</p>
+            
+            <p><strong>Why Choose Us:</strong> With over 2,000 verified scholarships, transparent processes, and dedicated 24/7 support, ScholarBridge has become India's most trusted platform for educational funding. Our success rate of 78% (compared to the industry average of 35%) speaks volumes about our commitment to student success. We offer personalized recommendations, application deadline reminders, expert counseling, and comprehensive documentation support. Join the ScholarBridge community today and take the first step toward achieving your educational goals!</p>
+        </section>
+
+        <!-- Support Section -->
+        <section class="about-section" id="support">
+            <h2>Support & Contact</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;">
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 15px;">📞 Contact Us</h3>
+                    <p><strong>Phone:</strong> +91 9876543210</p>
+                    <p><strong>WhatsApp:</strong> +91 9876543210</p>
+                    <p><strong>Email:</strong> support@scholarbridge.in</p>
+                    <p><strong>Hours:</strong> Mon-Fri, 9 AM - 6 PM IST</p>
+                </div>
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 15px;">📧 Get Help</h3>
+                    <p>For technical support:</p>
+                    <p><strong>tech@scholarbridge.in</strong></p>
+                    <p>For scholarship queries:</p>
+                    <p><strong>scholarships@scholarbridge.in</strong></p>
+                    <p>For partnerships:</p>
+                    <p><strong>partners@scholarbridge.in</strong></p>
+                </div>
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 15px;">🏢 Address</h3>
+                    <p>ScholarBridge Foundation</p>
+                    <p>123, MG Road, Bangalore</p>
+                    <p>Karnataka - 560001, India</p>
+                    <p style="margin-top: 10px;"><strong>Office Hours:</strong></p>
+                    <p>Monday - Friday: 9 AM - 6 PM</p>
+                    <p>Saturday: 10 AM - 2 PM</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Help Section -->
+        <section class="about-section" id="help">
+            <h2>Frequently Asked Questions</h2>
+            <div style="margin-top: 30px;">
+                <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">❓ How do I register on ScholarBridge?</h3>
+                    <p>Click the "Sign Up" button in the top-right corner, fill in your details including name, email, phone, date of birth, and family income. After registration, you can login and start applying for scholarships.</p>
+                </div>
+                <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">❓ What documents do I need to apply?</h3>
+                    <p>You'll need your academic certificates (SSLC, PUC/12th, UG, PG if applicable), income certificate, ID proof, and passport-size photograph. Some scholarships may require additional documents.</p>
+                </div>
+                <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">❓ How do I track my applications?</h3>
+                    <p>After logging in, go to "My Applications" section in the dashboard. You can see all your submitted applications along with their current status (Pending, Under Review, Approved, or Rejected).</p>
+                </div>
+                <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">❓ Can I apply for multiple scholarships?</h3>
+                    <p>Yes! You can apply for as many scholarships as you're eligible for. Each application is reviewed independently. Make sure you meet the eligibility criteria before applying.</p>
+                </div>
+                <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">❓ How long does the selection process take?</h3>
+                    <p>The review process typically takes 2-4 weeks. You'll receive email notifications about your application status. Check your "Notifications" section regularly for updates.</p>
+                </div>
+                <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">❓ What if I forgot my password?</h3>
+                    <p>Click on the "Login" button, then click "Forgot Password?" link below the password field. Enter your registered email to receive password reset instructions.</p>
+                </div>
+                <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">❓ How do I update my profile information?</h3>
+                    <p>Login to your account, go to "Dashboard" section, click "Edit Profile" to update your personal and education details. You can also upload documents from there.</p>
+                </div>
+                <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">❓ Are there any application fees?</h3>
+                    <p>No! ScholarBridge is completely free for students. We don't charge any registration or application fees. Beware of fraudulent websites asking for money.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Admin Login</h2>
+                <button class="close-btn" onclick="closeModal('adminLogin')">&times;</button>
+            </div>
+            
+            <div id="adminLoginMessage" class="message"></div>
+
+            <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+                <div class="form-group">
+                    <label>Admin Email</label>
+                    <input type="email" id="admin_email" required placeholder="admin@scholarbridge.in">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="admin_password" required placeholder="Enter admin password">
+                </div>
+                <button type="submit" class="btn-submit">Login as Admin</button>
+            </form>
+            <p style="margin-top: 15px; text-align: center; color: #999; font-size: 0.9rem;">
+                Demo: admin@scholarbridge.in / admin123
+            </p>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome Back!</h2>
+                <button class="close-btn" onclick="closeModal('login')">&times;</button>
+            </div>
+            
+            <div id="loginMessage" class="message"></div>
+            <div id="loginLoading" class="loading">
+                <div class="spinner"></div>
+                <p>Logging in...</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="login_email" required placeholder="your.email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login_password" required placeholder="Enter your password">
+                </div>
+                
+                <div class="g-recaptcha" data-sitekey="6LfcLRAsAAAAAI5mWm8L-gEMX7Os0bPRFwZ2C20o" style="margin-bottom: 15px; transform: scale(0.95); transform-origin: 0 0;"></div>
+                
+                <a href="#" class="forgot-link" onclick="showForgotPassword(); return false;">Forgot Password?</a>
+                <button type="submit" class="btn-submit">Login</button>
+            </form>
+
+            <div class="switch-form">
+                Don't have an account? <a href="#" onclick="switchModal('login', 'register'); return false;">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Account</h2>
+                <button class="close-btn" onclick="closeModal('register')">&times;</button>
+            </div>
+
+            <div id="registerMessage" class="message"></div>
+            <div id="registerLoading" class="loading">
+                <div class="spinner"></div>
+                <p>Creating account...</p>
+            </div>
+
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="reg_name" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="reg_email" required placeholder="your.email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="reg_password" required minlength="6" placeholder="Minimum 6 characters">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="reg_phone" required pattern="[0-9]{10}" placeholder="10-digit number">
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="reg_dob" required>
+                </div>
+                <div class="form-group">
+                    <label>Family Income</label>
+                    <select id="reg_income" required>
+                        <option value="">Select income range</option>
+                        <option value="Less than ₹2,00,000">Less than ₹2,00,000</option>
+                        <option value="₹2,00,000 - ₹5,00,000">₹2,00,000 - ₹5,00,000</option>
+                        <option value="More than ₹5,00,000">More than ₹5,00,000</option>
+                    </select>
+                </div>
+                
+                <div class="g-recaptcha" data-sitekey="6LfcLRAsAAAAAI5mWm8L-gEMX7Os0bPRFwZ2C20o" style="margin-bottom: 15px; transform: scale(0.95); transform-origin: 0 0;"></div>
+                
+                <button type="submit" class="btn-submit">Register</button>
+            </form>
+
+            <div class="switch-form">
+                Already have an account? <a href="#" onclick="switchModal('register', 'login'); return false;">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Reset Password</h2>
+                <button class="close-btn" onclick="closeModal('forgot')">&times;</button>
+            </div>
+
+            <div id="forgotMessage" class="message"></div>
+
+            <form id="forgotForm" onsubmit="handleForgotPassword(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="forgot_email" required>
+                </div>
+                <button type="submit" class="btn-submit">Send Reset Link</button>
+                <p style="margin-top: 15px; text-align: center; color: #999; font-size: 0.9rem;">
+                    You will receive password reset instructions via email
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Modal -->
+    <div id="applicationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Scholarship Application</h2>
+                <button class="close-btn" onclick="closeModal('application')">&times;</button>
+            </div>
+
+            <div id="applicationMessage" class="message"></div>
+
+            <form id="applicationForm" onsubmit="handleApplication(event)">
+                <h3 id="scholarshipName" style="color: #667eea; margin-bottom: 20px;"></h3>
+                
+                <div class="form-group">
+                    <label>SSLC Percentage</label>
+                    <input type="number" id="app_sslc" required min="0" max="100" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>PUC/12th Percentage</label>
+                    <input type="number" id="app_puc" required min="0" max="100" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>UG Degree</label>
+                    <input type="text" id="app_ug_degree" placeholder="e.g., B.Tech">
+                </div>
+                <div class="form-group">
+                    <label>UG Percentage/CGPA</label>
+                    <input type="text" id="app_ug_marks">
+                </div>
+                <div class="form-group">
+                    <label>PG Degree</label>
+                    <input type="text" id="app_pg_degree" placeholder="e.g., M.Tech">
+                </div>
+                <div class="form-group">
+                    <label>PG Percentage/CGPA</label>
+                    <input type="text" id="app_pg_marks">
+                </div>
+                <div class="form-group">
+                    <label>Current Course</label>
+                    <input type="text" id="app_course" required>
+                </div>
+                <div class="form-group">
+                    <label>Why do you deserve this scholarship?</label>
+                    <textarea id="app_reason" required rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Submit Application</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <button class="close-btn" onclick="closeModal('editProfile')">&times;</button>
+            </div>
+
+            <div id="editProfileMessage" class="message"></div>
+
+            <form id="editProfileForm" onsubmit="handleEditProfile(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="edit_name" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="edit_phone" required pattern="[0-9]{10}">
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" id="edit_dob" required>
+                </div>
+                <div class="form-group">
+                    <label>Family Income</label>
+                    <select id="edit_income" required>
+                        <option value="">Select income range</option>
+                        <option value="Less than ₹2,00,000">Less than ₹2,00,000</option>
+                        <option value="₹2,00,000 - ₹5,00,000">₹2,00,000 - ₹5,00,000</option>
+                        <option value="More than ₹5,00,000">More than ₹5,00,000</option>
+                    </select>
+                </div>
+
+                <h3 style="color: #667eea; margin: 20px 0;">Education Details</h3>
+                <div class="form-group">
+                    <label>SSLC Percentage</label>
+                    <input type="number" id="edit_sslc" min="0" max="100" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>PUC/12th Percentage</label>
+                    <input type="number" id="edit_puc" min="0" max="100" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>UG Degree</label>
+                    <input type="text" id="edit_ug_degree" placeholder="e.g., B.Tech, B.Sc">
+                </div>
+                <div class="form-group">
+                    <label>UG Percentage/CGPA</label>
+                    <input type="text" id="edit_ug_marks">
+                </div>
+                <div class="form-group">
+                    <label>PG Degree</label>
+                    <input type="text" id="edit_pg_degree" placeholder="e.g., M.Tech, MBA">
+                </div>
+                <div class="form-group">
+                    <label>PG Percentage/CGPA</label>
+                    <input type="text" id="edit_pg_marks">
+                </div>
+
+                <button type="submit" class="btn-submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <div class="sidebar">
+            <div class="logo">🎓 ScholarBridge</div>
+            <ul class="sidebar-menu">
+                <li class="active" onclick="showSection('home')">🏠 Home</li>
+                <li onclick="showSection('profile')">👤 Dashboard</li>
+                <li onclick="showSection('scholarships')">📚 Scholarships</li>
+                <li onclick="showSection('applications')">📝 My Applications</li>
+                <li onclick="showSection('settings')">⚙️ Settings</li>
+                <li class="notification-badge" onclick="showSection('notifications')">
+                    🔔 Notifications
+                    <span class="badge" id="notificationCount">0</span>
+                </li>
+            </ul>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </div>
+
+        <div class="main-content">
+            <!-- Home Section -->
+            <div id="homeSection" class="content-section active">
+                <h1>Welcome, <span id="userName"></span>! 🎉</h1>
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <h2 id="dashTotalApps">0</h2>
+                        <p>Total Applications</p>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <h2>15+</h2>
+                        <p>Available Scholarships</p>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <h2 id="dashPendingApps">0</h2>
+                        <p>Under Review</p>
+                    </div>
+                </div>
+                
+                <div class="user-info">
+                    <h3>Your Profile Summary</h3>
+                    <p><strong>📧 Email:</strong> <span id="userEmail"></span></p>
+                    <p><strong>📱 Phone:</strong> <span id="userPhone"></span></p>
+                    <p><strong>🎓 Role:</strong> Student</p>
+                </div>
+                
+                <div class="user-info">
+                    <h3>🔔 Recent Notifications</h3>
+                    <div id="homeNotifications">
+                        <p>✅ Welcome to ScholarBridge!</p>
+                        <p>📚 15+ scholarships available - Apply now!</p>
+                        <p>🎯 Complete your profile for better recommendations.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Dashboard Section -->
+            <div id="profileSection" class="content-section">
+                <div class="profile-dashboard">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profileAvatar">R</div>
+                        <div class="profile-info">
+                            <h1 id="profileName"></h1>
+                            <p>Student Profile</p>
+                            <button class="edit-btn" style="margin-top: 10px;" onclick="openEditProfile()">✏️ Edit Profile</button>
+                        </div>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat-box">
+                            <h3 id="profileTotalApps">0</h3>
+                            <p>Applications</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 id="profilePendingApps">0</h3>
+                            <p>Under Review</p>
+                        </div>
+                        <div class="stat-box">
+                            <h3 id="profileApprovedApps">0</h3>
+                            <p>Approved</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Me Section -->
+                <div class="user-info">
+                    <h2 style="color: #667eea; margin-bottom: 15px;">📝 About Me</h2>
+                    <p id="profileAbout" style="line-height: 1.8; color: #555;"></p>
+                    <button class="edit-btn" onclick="editAbout()">✏️ Edit About</button>
+                </div>
+
+                <h2 style="margin: 30px 0 20px 0;">Personal Details</h2>
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <h4>📧 Email</h4>
+                        <p id="profileEmail"></p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>📱 Phone</h4>
+                        <p id="profilePhone"></p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>🎂 Date of Birth</h4>
+                        <p id="profileDOB"></p>
+                    </div>
+                    <div class="detail-item">
+                        <h4>💰 Family Income</h4>
+                        <p id="profileIncome"></p>
+                    </div>
+                </div>
+
+                <h2 style="margin: 30px 0 20px 0;">Education Background</h2>
+                <div id="profileEducation" class="user-info">
+                    <p style="text-align: center; color: #999;">Complete your first application to see education details</p>
+                </div>
+
+                <h2 style="margin: 30px 0 20px 0;">Documents & Certificates</h2>
+                <div class="user-info">
+                    <p style="margin-bottom: 15px; color: #666;">Upload your academic certificates and documents for verification</p>
+                    <div style="display: grid; gap: 15px;">
+                        <div style="border: 2px dashed #667eea; padding: 20px; border-radius: 10px; text-align: center;">
+                            <p style="color: #667eea; font-weight: 600; margin-bottom: 10px;">📄 SSLC Certificate</p>
+                            <input type="file" id="sslcCert" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" onchange="handleFileUpload('sslc', this)">
+                            <button class="edit-btn" onclick="document.getElementById('sslcCert').click()">Upload SSLC Certificate</button>
+                            <p id="sslcStatus" style="margin-top: 10px; color: #28a745; display: none;">✅ Uploaded</p>
+                        </div>
+                        <div style="border: 2px dashed #667eea; padding: 20px; border-radius: 10px; text-align: center;">
+                            <p style="color: #667eea; font-weight: 600; margin-bottom: 10px;">📄 PUC/12th Certificate</p>
+                            <input type="file" id="pucCert" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" onchange="handleFileUpload('puc', this)">
+                            <button class="edit-btn" onclick="document.getElementById('pucCert').click()">Upload PUC Certificate</button>
+                            <p id="pucStatus" style="margin-top: 10px; color: #28a745; display: none;">✅ Uploaded</p>
+                        </div>
+                        <div style="border: 2px dashed #667eea; padding: 20px; border-radius: 10px; text-align: center;">
+                            <p style="color: #667eea; font-weight: 600; margin-bottom: 10px;">📄 Income Certificate</p>
+                            <input type="file" id="incomeCert" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" onchange="handleFileUpload('income', this)">
+                            <button class="edit-btn" onclick="document.getElementById('incomeCert').click()">Upload Income Certificate</button>
+                            <p id="incomeStatus" style="margin-top: 10px; color: #28a745; display: none;">✅ Uploaded</p>
+                        </div>
+                        <div style="border: 2px dashed #667eea; padding: 20px; border-radius: 10px; text-align: center;">
+                            <p style="color: #667eea; font-weight: 600; margin-bottom: 10px;">📄 ID Proof (Aadhar/PAN)</p>
+                            <input type="file" id="idProof" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" onchange="handleFileUpload('id', this)">
+                            <button class="edit-btn" onclick="document.getElementById('idProof').click()">Upload ID Proof</button>
+                            <p id="idStatus" style="margin-top: 10px; color: #28a745; display: none;">✅ Uploaded</p>
+                        </div>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: #999;">
+                        💡 Supported formats: PDF, JPG, PNG (Max 5MB each)
+                    </p>
+                </div>
+
+                <h2 style="margin: 30px 0 20px 0;">Recent Applications</h2>
+                <div id="profileRecentApps" class="user-info">
+                    <p style="text-align: center; color: #999;">No applications yet</p>
+                </div>
+            </div>
+
+            <!-- Scholarships Section -->
+            <div id="scholarshipsSection" class="content-section">
+                <h1>Available Scholarships</h1>
+                
+                <div class="filters">
+                    <h3>Filter Scholarships</h3>
+                    <div class="filter-row">
+                        <select id="filterCategory" onchange="applyFilters()">
+                            <option value="">All Categories</option>
+                            <option value="Merit">Merit-Based</option>
+                            <option value="Need">Need-Based</option>
+                            <option value="STEM">STEM</option>
+                            <option value="Arts">Arts & Humanities</option>
+                            <option value="Sports">Sports</option>
+                        </select>
+                        <select id="filterAmount" onchange="applyFilters()">
+                            <option value="">All Amounts</option>
+                            <option value="0-25000">Up to ₹25,000</option>
+                            <option value="25000-50000">₹25,000 - ₹50,000</option>
+                            <option value="50000-100000">₹50,000 - ₹1,00,000</option>
+                            <option value="100000+">Above ₹1,00,000</option>
+                        </select>
+                        <select id="filterLevel" onchange="applyFilters()">
+                            <option value="">All Levels</option>
+                            <option value="10th">Class 10</option>
+                            <option value="12th">Class 12</option>
+                            <option value="UG">Undergraduate</option>
+                            <option value="PG">Postgraduate</option>
+                        </select>
+                        <select id="filterState" onchange="applyFilters()">
+                            <option value="">All States</option>
+                            <option value="Karnataka">Karnataka</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Tamil Nadu">Tamil Nadu</option>
+                            <option value="All India">All India</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="scholarshipGrid" class="scholarship-grid"></div>
+            </div>
+
+            <!-- Applications Section -->
+            <div id="applicationsSection" class="content-section">
+                <h1>My Applications</h1>
+                <div id="applicationsList" class="scholarship-grid">
+                    <p style="text-align: center; color: #999;">Loading applications...</p>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+<div id="settingsSection" class="content-section">
+    <h1>Account Settings</h1>
+    
+    <div class="user-info">
+        <h3 style="color: #667eea; margin-bottom: 20px;">Notification Preferences</h3>
+        <div style="margin: 20px 0;">
+            <label style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                <input type="checkbox" checked id="emailNotif" style="width: 20px; height: 20px; cursor: pointer;">
+                <span style="font-size: 1rem;">Email notifications for new scholarships</span>
+            </label>
+        </div>
+        <div style="margin: 20px 0;">
+            <label style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                <input type="checkbox" checked id="statusNotif" style="width: 20px; height: 20px; cursor: pointer;">
+                <span style="font-size: 1rem;">Application status updates</span>
+            </label>
+        </div>
+        <div style="margin: 20px 0;">
+            <label style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                <input type="checkbox" id="weeklyDigest" style="width: 20px; height: 20px; cursor: pointer;">
+                <span style="font-size: 1rem;">Weekly scholarship digest</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="user-info">
+        <h3 style="color: #667eea; margin-bottom: 20px;">Account Actions</h3>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <button class="edit-btn" onclick="alert('Contact support@scholarbridge.in to change password')">🔐 Change Password</button>
+            <button class="edit-btn" style="background: #dc3545;" onclick="if(confirm('Are you sure you want to delete your account?')) alert('Contact support@scholarbridge.in')">🗑️ Delete Account</button>
+        </div>
+    </div>
+
+    <div class="user-info">
+        <h3 style="color: #667eea; margin-bottom: 20px;">Privacy & Security</h3>
+        <p style="color: #666; margin-bottom: 20px; line-height: 1.6;">Your data is stored securely and encrypted. We never share your personal information with third parties without your explicit consent.</p>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <button class="edit-btn" onclick="alert('📥 Your data download will begin shortly.')">📥 Download My Data</button>
+            <button class="edit-btn" onclick="alert('📜 View our privacy policy at scholarbridge.in/privacy')">📜 Privacy Policy</button>
+        </div>
+    </div>
+
+    <div class="user-info">
+        <h3 style="color: #667eea; margin-bottom: 20px;">Profile Visibility</h3>
+        <div style="margin: 20px 0;">
+            <label style="display: flex; align-items: center; gap: 15px; cursor: pointer;">
+                <input type="checkbox" checked style="width: 20px; height: 20px; cursor: pointer;">
+                <span style="font-size: 1rem;">Make my profile visible to scholarship providers</span>
+            </label>
+        </div>
+        <p style="color: #999; font-size: 0.9rem; margin-top: 10px;">This helps scholarship providers find and contact eligible students directly.</p>
+    </div>
+</div>
+            <!-- Notifications Section -->
+            <div id="notificationsSection" class="content-section">
+                <h1>Notifications</h1>
+                <div id="notificationsList" class="user-info"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="dashboard">
+        <div class="sidebar">
+            <div class="logo">🎓 ScholarBridge Admin</div>
+            <ul class="sidebar-menu">
+                <li class="active" onclick="showAdminSection('overview')">📊 Overview</li>
+                <li onclick="showAdminSection('applicants')">👥 Applicants</li>
+                <li onclick="showAdminSection('scholarships')">📚 Scholarships</li>
+                <li onclick="showAdminSection('reports')">📈 Reports</li>
+            </ul>
+            <button class="logout-btn" onclick="handleAdminLogout()">Logout</button>
+        </div>
+
+        <div class="main-content">
+            <!-- Admin Overview -->
+            <div id="overviewSection" class="content-section active">
+                <h1>Hi Admin! 👋</h1>
+                <p style="color: #666; margin-bottom: 30px;">Welcome to ScholarBridge Admin Dashboard</p>
+                
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <h2 id="adminTotalApplicants">0</h2>
+                        <p>Total Applicants</p>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <h2 id="adminPendingReview">0</h2>
+                        <p>Pending Review</p>
+                    </div>
+                    <div class="dashboard-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <h2 id="adminApproved">0</h2>
+                        <p>Approved</p>
+                    </div>
+                </div>
+
+                <div class="user-info">
+                    <h3>Quick Actions</h3>
+                    <button class="edit-btn" onclick="showAdminSection('applicants')">Review Applications</button>
+                    <button class="edit-btn" style="margin-left: 10px; background: #28a745;" onclick="showAdminSection('scholarships')">Manage Scholarships</button>
+                </div>
+            </div>
+
+            <!-- Applicants Management -->
+            <div id="applicantsSection" class="content-section">
+                <h1>Applicant Management</h1>
+                <div id="applicantsList"></div>
+            </div>
+
+            <!-- Scholarships Management -->
+            <div id="adminScholarshipsSection" class="content-section">
+                <h1>Scholarship Management</h1>
+                <div class="user-info">
+                    <p>Manage and monitor all available scholarships</p>
+                    <button class="edit-btn">Add New Scholarship</button>
+                </div>
+            </div>
+
+            <!-- Reports -->
+            <div id="reportsSection" class="content-section">
+                <h1>Reports & Analytics</h1>
+                <div class="user-info">
+                    <h3>Application Statistics</h3>
+                    <p>Total funds disbursed: ₹50,00,000</p>
+                    <p>Success rate: 78%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        let currentUser = null;
+        let isAdmin = false;
+        let notifications = [];
+
+        const scholarships = [
+            { name: 'Merit Scholarship 2024', amount: 50000, category: 'Merit', level: 'UG', state: 'All India', deadline: 'Dec 31, 2024', description: 'For students with 85%+ marks' },
+            { name: 'Need-Based Grant', amount: 75000, category: 'Need', level: '12th', state: 'Karnataka', deadline: 'Jan 15, 2025', description: 'For low-income families' },
+            { name: 'STEM Excellence Award', amount: 100000, category: 'STEM', level: 'PG', state: 'All India', deadline: 'Feb 28, 2025', description: 'For Science & Engineering' },
+            { name: 'Women Empowerment', amount: 60000, category: 'Merit', level: 'UG', state: 'Maharashtra', deadline: 'Mar 15, 2025', description: 'Supporting women' },
+            { name: 'Sports Excellence', amount: 80000, category: 'Sports', level: 'UG', state: 'All India', deadline: 'Jun 10, 2025', description: 'For athletes' },
+            { name: 'Arts & Humanities', amount: 55000, category: 'Arts', level: 'PG', state: 'Maharashtra', deadline: 'Sep 30, 2025', description: 'For Arts students' },
+            { name: 'Research Fellowship', amount: 120000, category: 'Merit', level: 'PG', state: 'All India', deadline: 'Oct 15, 2025', description: 'For research' },
+            { name: 'Rural Students Support', amount: 30000, category: 'Need', level: '10th', state: 'Karnataka', deadline: 'Nov 20, 2025', description: 'For rural areas' },
+            { name: 'Technical Skills', amount: 70000, category: 'STEM', level: 'UG', state: 'Tamil Nadu', deadline: 'Dec 10, 2025', description: 'For technical education' },
+            { name: 'First Generation Learners', amount: 50000, category: 'Need', level: '12th', state: 'All India', deadline: 'Jan 30, 2026', description: 'First in family' }
+        ];
+
+        // Carousel
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.dot');
+            if (n >= slides.length) currentSlide = 0;
+            if (n < 0) currentSlide = slides.length - 1;
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function goToSlide(n) {
+            currentSlide = n;
+            showSlide(currentSlide);
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 4000);
+
+        // Modal Functions
+        function openModal(type) {
+            document.getElementById(type + 'Modal').classList.add('active');
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').classList.remove('active');
+        }
+
+        function switchModal(from, to) {
+            closeModal(from);
+            openModal(to);
+        }
+
+        function showForgotPassword() {
+            closeModal('login');
+            openModal('forgot');
+        }
+
+        function showMessage(type, message, isSuccess) {
+            const msgEl = document.getElementById(type + 'Message');
+            msgEl.textContent = message;
+            msgEl.className = `message ${isSuccess ? 'success' : 'error'} show`;
+            setTimeout(() => msgEl.classList.remove('show'), 5000);
+        }
+
+        function showLoading(type, show) {
+            const loadingEl = document.getElementById(type + 'Loading');
+            if (loadingEl) loadingEl.style.display = show ? 'block' : 'none';
+        }
+
+        // Admin Login
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('admin_email').value;
+            const password = document.getElementById('admin_password').value;
+
+            // Demo admin credentials
+            if (email === 'admin@scholarbridge.in' && password === 'admin123') {
+                isAdmin = true;
+                currentUser = { name: 'Admin', email: email, role: 'admin' };
+                localStorage.setItem('isAdmin', 'true');
+                localStorage.setItem('adminUser', JSON.stringify(currentUser));
+                
+                showMessage('adminLogin', '✅ Admin login successful!', true);
+                setTimeout(() => {
+                    closeModal('adminLogin');
+                    showAdminDashboard();
+                }, 1000);
+            } else {
+                showMessage('adminLogin', '❌ Invalid admin credentials!', false);
+            }
+        }
+
+        // Show Admin Dashboard
+        function showAdminDashboard() {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('adminDashboard').classList.add('active');
+            loadAdminData();
+        }
+
+        // Load Admin Data
+        function loadAdminData() {
+            const allApplications = getAllApplications();
+            
+            document.getElementById('adminTotalApplicants').textContent = allApplications.length;
+            document.getElementById('adminPendingReview').textContent = 
+                allApplications.filter(a => a.status === 'Under Review').length;
+            document.getElementById('adminApproved').textContent = 
+                allApplications.filter(a => a.status === 'Approved').length;
+            
+            displayApplicants(allApplications);
+        }
+
+        // Get all applications from localStorage
+        function getAllApplications() {
+            const apps = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('applications_')) {
+                    const userApps = JSON.parse(localStorage.getItem(key));
+                    const email = key.replace('applications_', '');
+                    userApps.forEach(app => {
+                        apps.push({...app, userEmail: email});
+                    });
+                }
+            }
+            return apps.sort((a, b) => new Date(b.appliedAt) - new Date(a.appliedAt));
+        }
+
+        // Display Applicants
+        function displayApplicants(applications) {
+            const list = document.getElementById('applicantsList');
+            
+            if (applications.length === 0) {
+                list.innerHTML = '<div class="user-info"><p style="text-align: center; color: #999;">No applications yet</p></div>';
+                return;
+            }
+
+            list.innerHTML = applications.map((app, index) => `
+                <div class="applicant-card">
+                    <div class="applicant-header">
+                        <div>
+                            <h3 style="color: #667eea;">${app.scholarshipName}</h3>
+                            <p style="color: #666; margin-top: 5px;">
+                                <strong>Applicant:</strong> ${app.userEmail}<br>
+                                <strong>Applied:</strong> ${new Date(app.appliedAt).toLocaleDateString()}<br>
+                                <strong>Status:</strong> <span style="color: ${app.status === 'Approved' ? '#28a745' : app.status === 'Rejected' ? '#dc3545' : '#ffc107'};">${app.status}</span>
+                            </p>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn-approve" onclick="updateApplicationStatus(${index}, 'Approved')">✅ Approve</button>
+                            <button class="btn-reject" onclick="updateApplicationStatus(${index}, 'Rejected')">❌ Reject</button>
+                            <button class="btn-hold" onclick="updateApplicationStatus(${index}, 'On Hold')">⏸️ Hold</button>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 15px 0;">
+                        <div>
+                            <p><strong>📚 SSLC:</strong> ${app.sslc}%</p>
+                            <p><strong>📚 PUC/12th:</strong> ${app.puc}%</p>
+                        </div>
+                        <div>
+                            ${app.ugDegree ? `<p><strong>🎓 ${app.ugDegree}:</strong> ${app.ugMarks}</p>` : ''}
+                            ${app.pgDegree ? `<p><strong>🎓 ${app.pgDegree}:</strong> ${app.pgMarks}</p>` : ''}
+                        </div>
+                    </div>
+                    
+                    <p><strong>📖 Current Course:</strong> ${app.currentCourse}</p>
+                    <p style="margin-top: 10px;"><strong>💭 Why deserving:</strong> ${app.reason}</p>
+                    
+                    <div class="document-viewer">
+                        <h4 style="color: #667eea; margin-bottom: 10px;">📄 Uploaded Documents</h4>
+                        ${getDocumentsForUser(app.userEmail)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get documents for user
+        function getDocumentsForUser(email) {
+            const docs = JSON.parse(localStorage.getItem(`documents_${email}`) || '{}');
+            if (Object.keys(docs).length === 0) {
+                return '<p style="color: #999;">No documents uploaded yet</p>';
+            }
+            
+            const docNames = {
+                'sslc': 'SSLC Certificate',
+                'puc': 'PUC/12th Certificate',
+                'income': 'Income Certificate',
+                'id': 'ID Proof'
+            };
+            
+            return Object.keys(docs).map(key => `
+                <div class="document-item">
+                    <span>📎 ${docNames[key] || key}</span>
+                    <button class="btn-view-doc" onclick="alert('Document: ${docs[key].name}\\nSize: ${(docs[key].size / 1024).toFixed(2)} KB\\nUploaded: ${new Date(docs[key].uploadedAt).toLocaleString()}')">View Details</button>
+                </div>
+            `).join('');
+        }
+
+        // Update Application Status
+        function updateApplicationStatus(index, newStatus) {
+            const allApps = getAllApplications();
+            const app = allApps[index];
+            
+            // Get user's applications
+            const userApps = JSON.parse(localStorage.getItem(`applications_${app.userEmail}`) || '[]');
+            const appIndex = userApps.findIndex(a => 
+                a.scholarshipName === app.scholarshipName && 
+                a.appliedAt === app.appliedAt
+            );
+            
+            if (appIndex !== -1) {
+                userApps[appIndex].status = newStatus;
+                localStorage.setItem(`applications_${app.userEmail}`, JSON.stringify(userApps));
+                
+                // Add notification
+                addNotification(app.userEmail, {
+                    message: `Your application for ${app.scholarshipName} has been ${newStatus}`,
+                    type: newStatus === 'Approved' ? 'success' : newStatus === 'Rejected' ? 'error' : 'warning',
+                    date: new Date().toISOString()
+                });
+                
+                alert(`✅ Application ${newStatus}!`);
+                loadAdminData();
+            }
+        }
+
+        // Add Notification
+        function addNotification(userEmail, notification) {
+            const notifs = JSON.parse(localStorage.getItem(`notifications_${userEmail}`) || '[]');
+            notifs.unshift(notification);
+            localStorage.setItem(`notifications_${userEmail}`, JSON.stringify(notifs));
+        }
+
+        // Show Admin Section
+        function showAdminSection(section) {
+            document.querySelectorAll('#adminDashboard .content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('#adminDashboard .sidebar-menu li').forEach(li => li.classList.remove('active'));
+            
+            document.getElementById(section + 'Section').classList.add('active');
+            event.target.classList.add('active');
+            
+            if (section === 'applicants') {
+                loadAdminData();
+            }
+        }
+
+        // Admin Logout
+        function handleAdminLogout() {
+            localStorage.removeItem('isAdmin');
+            localStorage.removeItem('adminUser');
+            isAdmin = false;
+            currentUser = null;
+            document.getElementById('adminDashboard').classList.remove('active');
+            document.getElementById('landingPage').style.display = 'block';
+            alert('✅ Logged out successfully!');
+        }
+
+        // Register
+        function handleRegister(e) {
+            e.preventDefault();
+            showLoading('register', true);
+
+            const data = {
+                name: document.getElementById('reg_name').value,
+                email: document.getElementById('reg_email').value,
+                password: document.getElementById('reg_password').value,
+                phone: document.getElementById('reg_phone').value,
+                dateOfBirth: document.getElementById('reg_dob').value,
+                familyIncome: document.getElementById('reg_income').value
+            };
+
+            // Check if user exists
+            const existingUser = localStorage.getItem(`user_${data.email}`);
+            if (existingUser) {
+                showMessage('register', '❌ Email already registered!', false);
+                showLoading('register', false);
+                return;
+            }
+
+            // Save user
+            localStorage.setItem(`user_${data.email}`, JSON.stringify(data));
+            
+            // Add welcome notification
+            addNotification(data.email, {
+                message: '🎉 Welcome to ScholarBridge! Complete your profile to get started.',
+                type: 'success',
+                date: new Date().toISOString()
+            });
+            
+            showMessage('register', '✅ Registration successful! Please login.', true);
+            document.getElementById('registerForm').reset();
+            showLoading('register', false);
+            setTimeout(() => switchModal('register', 'login'), 2000);
+        }
+
+        // Login
+        function handleLogin(e) {
+            e.preventDefault();
+            showLoading('login', true);
+
+            const email = document.getElementById('login_email').value;
+            const password = document.getElementById('login_password').value;
+
+            const userStr = localStorage.getItem(`user_${email}`);
+            
+            if (!userStr) {
+                showMessage('login', '❌ User not found! Please register.', false);
+                showLoading('login', false);
+                return;
+            }
+
+            const user = JSON.parse(userStr);
+            
+            if (user.password !== password) {
+                showMessage('login', '❌ Incorrect password!', false);
+                showLoading('login', false);
+                return;
+            }
+
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            showMessage('login', '✅ Login successful!', true);
+            showLoading('login', false);
+            
+            setTimeout(() => {
+                closeModal('login');
+                showDashboard(user);
+            }, 1000);
+        }
+
+        // Forgot Password
+        function handleForgotPassword(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgot_email').value;
+            
+            const userStr = localStorage.getItem(`user_${email}`);
+            if (!userStr) {
+                showMessage('forgot', '❌ Email not found!', false);
+                return;
+            }
+            
+            showMessage('forgot', '✅ Password reset instructions sent to your email!', true);
+            setTimeout(() => {
+                closeModal('forgot');
+                openModal('login');
+            }, 2000);
+        }
+
+        // Show Dashboard
+        function showDashboard(user) {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userEmail').textContent = user.email;
+            document.getElementById('userPhone').textContent = user.phone;
+            
+            document.getElementById('profileName').textContent = user.name;
+            document.getElementById('profileEmail').textContent = user.email;
+            document.getElementById('profilePhone').textContent = user.phone;
+            document.getElementById('profileIncome').textContent = user.familyIncome || 'Not specified';
+            document.getElementById('profileDOB').textContent = user.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : 'Not provided';
+            document.getElementById('profileAvatar').textContent = user.name.charAt(0).toUpperCase();
+            
+            generateAbout(user);
+            loadDocumentStatus();
+            displayScholarships();
+            loadApplications();
+            loadNotifications();
+        }
+
+        // Generate About
+        function generateAbout(user) {
+            const aboutText = `I am ${user.name}, a dedicated student passionate about pursuing higher education. Coming from a family with an income range of ${user.familyIncome || 'moderate background'}, I believe in the power of education to transform lives. I am actively seeking scholarship opportunities to support my academic journey and achieve my career goals. With strong determination and commitment to excellence, I aim to make the most of every educational opportunity that comes my way.`;
+            
+            const savedAbout = localStorage.getItem(`about_${user.email}`);
+            document.getElementById('profileAbout').textContent = savedAbout || aboutText;
+        }
+
+        // Edit About
+        function editAbout() {
+            const currentAbout = document.getElementById('profileAbout').textContent;
+            const newAbout = prompt('Edit your About section:', currentAbout);
+            
+            if (newAbout && newAbout.trim()) {
+                document.getElementById('profileAbout').textContent = newAbout;
+                localStorage.setItem(`about_${currentUser.email}`, newAbout);
+                alert('✅ About section updated!');
+            }
+        }
+
+        // Open Edit Profile
+        function openEditProfile() {
+            document.getElementById('edit_name').value = currentUser.name;
+            document.getElementById('edit_phone').value = currentUser.phone;
+            document.getElementById('edit_dob').value = currentUser.dateOfBirth ? currentUser.dateOfBirth.split('T')[0] : '';
+            document.getElementById('edit_income').value = currentUser.familyIncome || '';
+            
+            const education = JSON.parse(localStorage.getItem(`education_${currentUser.email}`) || '{}');
+            document.getElementById('edit_sslc').value = education.sslc || '';
+            document.getElementById('edit_puc').value = education.puc || '';
+            document.getElementById('edit_ug_degree').value = education.ugDegree || '';
+            document.getElementById('edit_ug_marks').value = education.ugMarks || '';
+            document.getElementById('edit_pg_degree').value = education.pgDegree || '';
+            document.getElementById('edit_pg_marks').value = education.pgMarks || '';
+            
+            openModal('editProfile');
+        }
+
+        // Handle Edit Profile
+        function handleEditProfile(e) {
+            e.preventDefault();
+            
+            currentUser.name = document.getElementById('edit_name').value;
+            currentUser.phone = document.getElementById('edit_phone').value;
+            currentUser.dateOfBirth = document.getElementById('edit_dob').value;
+            currentUser.familyIncome = document.getElementById('edit_income').value;
+            
+            const education = {
+                sslc: document.getElementById('edit_sslc').value,
+                puc: document.getElementById('edit_puc').value,
+                ugDegree: document.getElementById('edit_ug_degree').value,
+                ugMarks: document.getElementById('edit_ug_marks').value,
+                pgDegree: document.getElementById('edit_pg_degree').value,
+                pgMarks: document.getElementById('edit_pg_marks').value
+            };
+            
+            localStorage.setItem(`user_${currentUser.email}`, JSON.stringify(currentUser));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem(`education_${currentUser.email}`, JSON.stringify(education));
+            
+            updateProfileDisplay(currentUser, education);
+            
+            showMessage('editProfile', '✅ Profile updated successfully!', true);
+            setTimeout(() => closeModal('editProfile'), 2000);
+        }
+
+        // Update Profile Display
+        function updateProfileDisplay(user, education) {
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('profileName').textContent = user.name;
+            document.getElementById('profilePhone').textContent = user.phone;
+            document.getElementById('profileIncome').textContent = user.familyIncome;
+            document.getElementById('profileDOB').textContent = new Date(user.dateOfBirth).toLocaleDateString();
+            document.getElementById('profileAvatar').textContent = user.name.charAt(0).toUpperCase();
+            
+            if (education.sslc || education.puc) {
+                let eduHTML = '';
+                if (education.sslc) eduHTML += `<p><strong>📚 SSLC:</strong> ${education.sslc}%</p>`;
+                if (education.puc) eduHTML += `<p><strong>📚 PUC/12th:</strong> ${education.puc}%</p>`;
+                if (education.ugDegree) eduHTML += `<p><strong>🎓 ${education.ugDegree}:</strong> ${education.ugMarks}</p>`;
+                if (education.pgDegree) eduHTML += `<p><strong>🎓 ${education.pgDegree}:</strong> ${education.pgMarks}</p>`;
+                
+                document.getElementById('profileEducation').innerHTML = eduHTML;
+            }
+        }
+
+        // Handle File Upload
+        function handleFileUpload(type, input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            if (file.size > 5 * 1024 * 1024) {
+                alert('❌ File size must be less than 5MB');
+                input.value = '';
+                return;
+            }
+            
+            const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+            if (!validTypes.includes(file.type)) {
+                alert('❌ Please upload PDF, JPG, or PNG files only');
+                input.value = '';
+                return;
+            }
+            
+            const documents = JSON.parse(localStorage.getItem(`documents_${currentUser.email}`) || '{}');
+            
+            documents[type] = {
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                uploadedAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem(`documents_${currentUser.email}`, JSON.stringify(documents));
+            
+            document.getElementById(`${type}Status`).style.display = 'block';
+            
+            addNotification(currentUser.email, {
+                message: `📄 ${file.name} uploaded successfully!`,
+                type: 'success',
+                date: new Date().toISOString()
+            });
+            
+            alert(`✅ ${file.name} uploaded successfully!`);
+        }
+
+        // Load Document Status
+        function loadDocumentStatus() {
+            if (!currentUser) return;
+            
+            const documents = JSON.parse(localStorage.getItem(`documents_${currentUser.email}`) || '{}');
+            
+            ['sslc', 'puc', 'income', 'id'].forEach(type => {
+                if (documents[type]) {
+                    document.getElementById(`${type}Status`).style.display = 'block';
+                }
+            });
+            
+            const education = JSON.parse(localStorage.getItem(`education_${currentUser.email}`) || '{}');
+            if (education.sslc || education.puc) {
+                updateProfileDisplay(currentUser, education);
+            }
+        }
+
+        // Show Section
+        function showSection(section) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+            document.getElementById(section + 'Section').classList.add('active');
+            event.target.classList.add('active');
+            
+            if (section === 'applications') {
+                loadApplications();
+            } else if (section === 'notifications') {
+                loadNotifications();
+                markNotificationsAsRead();
+            }
+        }
+
+        // Display Scholarships
+        function displayScholarships(filtered = scholarships) {
+            const grid = document.getElementById('scholarshipGrid');
+            grid.innerHTML = filtered.map(s => `
+                <div class="scholarship-card">
+                    <h3>${s.name}</h3>
+                    <p><strong>Amount:</strong> ₹${s.amount.toLocaleString()}</p>
+                    <p><strong>Category:</strong> ${s.category}</p>
+                    <p><strong>Level:</strong> ${s.level}</p>
+                    <p><strong>Deadline:</strong> ${s.deadline}</p>
+                    <p>${s.description}</p>
+                    <button class="btn-apply" onclick="openApplicationModal('${s.name}')">Apply Now</button>
+                </div>
+            `).join('');
+        }
+
+        // Apply Filters
+        function applyFilters() {
+            const category = document.getElementById('filterCategory').value;
+            const amount = document.getElementById('filterAmount').value;
+            const level = document.getElementById('filterLevel').value;
+            const state = document.getElementById('filterState').value;
+
+            let filtered = scholarships;
+
+            if (category) filtered = filtered.filter(s => s.category === category);
+            if (level) filtered = filtered.filter(s => s.level === level);
+            if (state) filtered = filtered.filter(s => s.state === state || s.state === 'All India');
+            
+            if (amount) {
+                const [min, max] = amount.includes('+') ? [100000, Infinity] : amount.split('-').map(Number);
+                filtered = filtered.filter(s => s.amount >= min && s.amount <= (max || Infinity));
+            }
+
+            displayScholarships(filtered);
+        }
+
+        // Open Application Modal
+        function openApplicationModal(name) {
+            document.getElementById('scholarshipName').textContent = name;
+            document.getElementById('applicationForm').reset();
+            openModal('application');
+        }
+
+        // Handle Application
+        function handleApplication(e) {
+            e.preventDefault();
+
+            const data = {
+                scholarshipName: document.getElementById('scholarshipName').textContent,
+                sslc: document.getElementById('app_sslc').value,
+                puc: document.getElementById('app_puc').value,
+                ugDegree: document.getElementById('app_ug_degree').value,
+                ugMarks: document.getElementById('app_ug_marks').value,
+                pgDegree: document.getElementById('app_pg_degree').value,
+                pgMarks: document.getElementById('app_pg_marks').value,
+                currentCourse: document.getElementById('app_course').value,
+                reason: document.getElementById('app_reason').value,
+                status: 'Under Review',
+                appliedAt: new Date().toISOString()
+            };
+
+            const applications = JSON.parse(localStorage.getItem(`applications_${currentUser.email}`) || '[]');
+            applications.push(data);
+            localStorage.setItem(`applications_${currentUser.email}`, JSON.stringify(applications));
+            
+            addNotification(currentUser.email, {
+                message: `🎉 Application submitted for ${data.scholarshipName}!`,
+                type: 'success',
+                date: new Date().toISOString()
+            });
+            
+            showMessage('application', '✅ Application submitted successfully!', true);
+            setTimeout(() => {
+                closeModal('application');
+                loadApplications();
+                showSection('applications');
+            }, 2000);
+        }
+
+        // Load Applications
+        function loadApplications() {
+            if (!currentUser) return;
+            
+            const applications = JSON.parse(localStorage.getItem(`applications_${currentUser.email}`) || '[]');
+            displayApplications(applications);
+            updateStats(applications);
+        }
+
+        // Display Applications
+        function displayApplications(apps) {
+            const list = document.getElementById('applicationsList');
+            
+            if (apps.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: #999;">No applications yet. Apply to scholarships!</p>';
+                return;
+            }
+
+            list.innerHTML = apps.map(app => `
+                <div class="scholarship-card">
+                    <h3>${app.scholarshipName}</h3>
+                    <p><strong>Applied:</strong> ${new Date(app.appliedAt).toLocaleDateString()}</p>
+                    <p><strong>Status:</strong> <span style="color: ${app.status === 'Approved' ? '#28a745' : app.status === 'Rejected' ? '#dc3545' : '#ffc107'};">${app.status}</span></p>
+                    <p><strong>SSLC:</strong> ${app.sslc}% | <strong>PUC:</strong> ${app.puc}%</p>
+                    <p><strong>Course:</strong> ${app.currentCourse}</p>
+                    <details style="margin-top: 10px;">
+                        <summary style="cursor: pointer; color: #667eea; font-weight: 600;">View Details</summary>
+                        <div style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+                            ${app.ugDegree ? `<p><strong>UG:</strong> ${app.ugDegree} - ${app.ugMarks}</p>` : ''}
+                            ${app.pgDegree ? `<p><strong>PG:</strong> ${app.pgDegree} - ${app.pgMarks}</p>` : ''}
+                            <p><strong>Reason:</strong> ${app.reason}</p>
+                        </div>
+                    </details>
+                </div>
+            `).join('');
+
+            if (apps.length > 0) {
+                const latest = apps[0];
+                document.getElementById('profileEducation').innerHTML = `
+                    <p><strong>SSLC:</strong> ${latest.sslc}%</p>
+                    <p><strong>PUC:</strong> ${latest.puc}%</p>
+                    ${latest.ugDegree ? `<p><strong>${latest.ugDegree}:</strong> ${latest.ugMarks}</p>` : ''}
+                    ${latest.pgDegree ? `<p><strong>${latest.pgDegree}:</strong> ${latest.pgMarks}</p>` : ''}
+                `;
+
+                document.getElementById('profileRecentApps').innerHTML = apps.slice(0, 3).map(app => `
+                    <div style="padding: 10px; border-bottom: 1px solid #eee;">
+                        <p style="color: #667eea; font-weight: 600;">${app.scholarshipName}</p>
+                        <p style="font-size: 0.9rem; color: #999;">${new Date(app.appliedAt).toLocaleDateString()} • ${app.status}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Update Stats
+        function updateStats(apps) {
+            const total = apps.length;
+            const pending = apps.filter(a => a.status === 'Under Review').length;
+            const approved = apps.filter(a => a.status === 'Approved').length;
+            
+            document.getElementById('dashTotalApps').textContent = total;
+            document.getElementById('dashPendingApps').textContent = pending;
+            document.getElementById('profileTotalApps').textContent = total;
+            document.getElementById('profilePendingApps').textContent = pending;
+            document.getElementById('profileApprovedApps').textContent = approved;
+        }
+
+        // Load Notifications
+        function loadNotifications() {
+            if (!currentUser) return;
+            
+            const notifs = JSON.parse(localStorage.getItem(`notifications_${currentUser.email}`) || '[]');
+            const unreadCount = notifs.filter(n => !n.read).length;
+            
+            document.getElementById('notificationCount').textContent = unreadCount;
+            document.getElementById('notificationCount').style.display = unreadCount > 0 ? 'flex' : 'none';
+            
+            const list = document.getElementById('notificationsList');
+            
+            if (notifs.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: #999;">No notifications yet</p>';
+                return;
+            }
+            
+            list.innerHTML = notifs.map(n => `
+                <div class="notification-item ${n.read ? '' : 'unread'}">
+                    <p style="font-weight: 600; color: ${n.type === 'success' ? '#28a745' : n.type === 'error' ? '#dc3545' : '#667eea'};">
+                        ${n.message}
+                    </p>
+                    <p style="font-size: 0.9rem; color: #999; margin-top: 5px;">
+                        ${new Date(n.date).toLocaleString()}
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        // Mark Notifications as Read
+        function markNotificationsAsRead() {
+            if (!currentUser) return;
+            
+            const notifs = JSON.parse(localStorage.getItem(`notifications_${currentUser.email}`) || '[]');
+            notifs.forEach(n => n.read = true);
+            localStorage.setItem(`notifications_${currentUser.email}`, JSON.stringify(notifs));
+            
+            document.getElementById('notificationCount').textContent = '0';
+            document.getElementById('notificationCount').style.display = 'none';
+        }
+
+        // Logout
+        function handleLogout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('landingPage').style.display = 'block';
+            alert('✅ Logged out successfully!');
+        }
+
+        // Check if logged in
+        window.onload = function() {
+            // Check admin login
+            if (localStorage.getItem('isAdmin') === 'true') {
+                const adminUser = JSON.parse(localStorage.getItem('adminUser'));
+                if (adminUser) {
+                    isAdmin = true;
+                    currentUser = adminUser;
+                    showAdminDashboard();
+                    return;
+                }
+            }
+            
+            // Check student login
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (user) {
+                currentUser = user;
+                showDashboard(user);
+            }
+        };
+    </script>
+</body>
+</html>
