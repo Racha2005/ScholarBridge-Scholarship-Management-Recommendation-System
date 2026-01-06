@@ -17,10 +17,10 @@ Many students miss scholarships simply because:
 
 ScholarBridge brings everything into one integrated platform with automation, notifications, and role-based access.
 
-<p align="center"><img src="images/Screenshot 2025-11-21 053910.png" width="800"></p><br>
-<p align="center"><img src="images/Screenshot 2025-11-21 053835.png" width="800"></p><br>
-<p align="center"><img src="images/Screenshot 2025-11-21 053753.png" width="800"></p><br>
-<p align="center"><img src="images/Screenshot 2025-11-21 053702.png" width="800"></p>
+<p align="center"><img src="images/Screenshot 2025-11-19 123544.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-19 123623.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-19 123644.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-19 123525.png" width="800"></p>
 
 -------------------------------------------------------------
 
@@ -83,6 +83,10 @@ Architecture: REST API based layered design
 
 This ensures flexibility, performance, security, and easy maintenance.
 
+<p align="center"><img src="images/Screenshot 2025-11-17 145603.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-17 145554.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-17 145006.png" width="800"></p>
+
 -------------------------------------------------------------
 
 ## 📐 System Architecture 
@@ -115,37 +119,57 @@ APPLICATIONS
 NOTIFICATIONS
 - Sends important alerts and updates to users
 
+<p align="center"><img src="images/Screenshot 2025-11-17 145536.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-17 145514.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-17 145504.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-17 145129.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-17 145105.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-17 145030.png" width="800"></p>
+
 -------------------------------------------------------------
 
 ## 📸 Screenshots
 
-(Place your screenshots inside an images/ folder in your repository. Rename files simply.)
-
-HOME PAGE  
-![Home](<p align="center"><img src="images/Screenshot 2025-11-21 053910.png" width="800"></p><br>)
+HOME PAGE
+<p align="center"><img src="images/Screenshot 2025-11-19 123544.png" width="800"></p><br>
 
 LOGIN / REGISTER  
-![Login](images/login.png)
+<p align="center"><img src="images/Screenshot 2025-11-19 123332.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-18 222240.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-18 222230.png" width="800"></p>
 
 DASHBOARD  
-![Dashboard](images/dashboard.png)
+<p align="center"><img src="images/Screenshot 2025-11-19 141149.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-19 120410.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-19 121623.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-19 123131.png" width="800"></p>
 
 SCHOLARSHIP LIST  
-![Scholarships](images/scholarships.png)
+<p align="center"><img src="images/Screenshot 2025-11-19 121651.png" width="800"></p><br>
 
 APPLICATION FORM  
-![Application](images/application.png)
+<p align="center"><img src="images/Screenshot 2025-11-18 222050.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-18 222056.png" width="800"></p>
 
 PROVIDER DASHBOARD  
-![Provider](images/provider.png)
+<p align="center"><img src="images/Screenshot 2025-11-21 053259.png" width="800"></p><br>
 
-ADMIN PANEL  
-![Admin](images/admin.png)
+PROVIDER LOGIN SCREEN
+<p align="center"><img src="images/Screenshot 2025-11-21 052819.png" width="800"></p><br>
+
+ADMIN PANEL  (PROVIDER)
+<p align="center"><img src="images/Screenshot 2025-11-21 054052.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-21 054154.png" width="800"></p><br>
 
 NOTIFICATIONS  
-![Notifications](images/notifications.png)
+<p align="center"><img src="images/Screenshot 2025-11-19 121808.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-11-21 050020.png" width="800"></p>
 
-Note: Rename filenames according to your actual images.
+SETTINGS
+<p align="center"><img src="images/Screenshot 2025-11-19 121752.png" width="800"></p><br>
+
+LIST OF APPLICATIONS APPLIED BY A STUDENT
+<p align="center"><img src="images/Screenshot 2025-11-21 064755.png" width="800"></p><br>
 
 -------------------------------------------------------------
 
@@ -182,28 +206,6 @@ Deployment can later be done on Render, Railway, or any cloud service.
 - Validation of all user inputs
 - Secure API routing
 - Sensitive keys stored in environment variables
-
--------------------------------------------------------------
-
-## 📈 Future Enhancements
-
-- Dedicated mobile app
-- AI-based document verification
-- Multiple language support
-- Advanced analytics dashboards
-- Auto-scaling deployment in cloud
-- Chat-assistant for students
-
--------------------------------------------------------------
-
-## 🤝 Contributing
-
-Contributions are welcome. Suggested steps:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes clearly
-4. Submit a pull request
 
 -------------------------------------------------------------
 
