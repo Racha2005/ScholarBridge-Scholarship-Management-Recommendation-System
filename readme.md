@@ -171,9 +171,16 @@ SETTINGS
 LIST OF APPLICATIONS APPLIED BY A STUDENT
 <p align="center"><img src="images/Screenshot 2025-11-21 064755.png" width="800"></p><br>
 
+RECORDS SAVED IN MONGODB WITH MACHINE LEARNING QUERIES
+<p align="center"><img src="images/Screenshot 2025-10-13 225125.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-10-13 230002.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-10-13 225947.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-10-13 225932.png" width="800"></p><br>
+<p align="center"><img src="images/Screenshot 2025-10-13 225922.png" width="800"></p><br>
+
 -------------------------------------------------------------
 
-## ⚙️ Installation Steps (Simple Explanation)
+## ⚙️ Installation Steps
 
 1. Download or clone the project
 2. Install dependencies using npm
