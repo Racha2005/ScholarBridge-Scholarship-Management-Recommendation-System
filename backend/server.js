@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const connectDatabase = require('./config/database'); // FIXED
+const connectDatabase = require('./config/database');
 
 const app = express();
 
@@ -46,6 +46,11 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/applications', require('./routes/applications'));
 app.use('/api/scholarships', require('./routes/scholarships'));
 
+// Root Route (for Render health check)
+app.get('/', (req, res) => {
+  res.status(200).send('ScholarBridge Backend Running');
+});
+
 // Health Check Route
 app.get('/health', (req, res) => {
   res.status(200).json({
@@ -78,7 +83,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({
     success: false,
     message: 'Server error',
-    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
+    error: process.env.NODE_ENV === 'development'
+      ? err.message
+      : 'Internal server error'
   });
 });
 
@@ -88,11 +95,11 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`
   ╔════════════════════════════════════════╗
-  ║        ScholarBridge Backend Server     ║
-  ║        Status: 🟢 Running              ║
-  ║        Port: ${PORT}                       
-  ║        Environment: ${process.env.NODE_ENV || 'development'}      
-  ║        CORS: Enabled (All Origins)     ║
+  ║        ScholarBridge Backend Server   ║
+  ║        Status: 🟢 Running             ║
+  ║        Port: ${PORT}                  
+  ║        Environment: ${process.env.NODE_ENV || 'development'}  
+  ║        CORS: Enabled (All Origins)    ║
   ╚════════════════════════════════════════╝
   `);
 });
